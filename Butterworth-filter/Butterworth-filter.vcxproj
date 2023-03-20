@@ -140,6 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Butterworth-filter.cpp" />
+    <ClCompile Include="NumPy.cpp" />
+    <ClCompile Include="Signal.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NumPy.h" />
+    <ClInclude Include="Signal.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

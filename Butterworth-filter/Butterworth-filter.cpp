@@ -1,20 +1,28 @@
-﻿// Butterworth-filter.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
 
-#include <iostream>
+#include "Signal.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main() {
+    int SAMPLE_RATE = 1000;
+    int DURATION = 1;
+    int N = SAMPLE_RATE * DURATION;
+
+
+    vector<double> x;
+
+    vector<double> nice_tone1, noise_tone2, noise_tone3;
+
+    tie(x, nice_tone1) = Signal::generateSineWave(30, SAMPLE_RATE, DURATION);
+    tie(x, noise_tone2) = Signal::generateSineWave(100, SAMPLE_RATE, DURATION);
+    tie(x, noise_tone3) = Signal::generateSineWave(125, SAMPLE_RATE, DURATION);
+
+    vector<double> mixed_tone1(x.size());
+
+    for (int i = 0; i < mixed_tone1.size(); i++)
+        mixed_tone1[i] = nice_tone1[i] + 0.8 * noise_tone2[i] + 0.5 * noise_tone3[i];
+
+    //Signal::printArray(nice_tone1);
+    Signal::printFile(x, mixed_tone1, "inputSignal.txt");
+
+
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
