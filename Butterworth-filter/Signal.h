@@ -36,20 +36,46 @@ public:
 		else
 			p = (order - 1);
 
-		vector<double> numerator(p + 1);
+		vector<double> numerator(p + 1); 
 		for(int k = 0; k < p + 1; k++){
-			numerator[k] = simplePow(-w * w, p / 2) * C(k, p);
+			numerator[k] = simplePow(-w * w, p / 2) * C(k, p); // numerator is got
 		}
 
 		vector<double> denominator(p + 1);
-		denCoeffs(denominator, w, order, p);
+		denCoeffs(denominator, w, order, p); // denominator is got
 
 
+		double a0 = 0;
+
+		if (order % 2 == 0) {	
+			a0 = denominator.back();
+			denominator.pop_back();
+
+		} else {
+			numerator.push_back(0);
+			denominator.push_back(0);
+
+			vector<double> zNumerator = NumPy::roll(numerator, 1);
+			vector<double> zDenominator = NumPy::roll(denominator, 1);
+
+			for (int i = 0; i < numerator.size(); i++) {
+				numerator[i] = (zNumerator[i] + numerator[i]) * w;
+			}
+
+			for (int i = 0; i < denominator.size(); i++) {
+				denominator[i] = (zDenominator[i] + denominator[i]) * w + (zDenominator[i] - denominator[i]);
+			}
+			
+			a0 = denominator.back();
+			denominator.pop_back();
+
+		}
+
+		return make_tuple(NumPy::valueDivideVector(a0, numerator), NumPy::valueDivideVector(a0, denominator));
 
 
-		return make_tuple(numerator, denominator);
+		
 	}
-
 
 	static double transformFrequency(double w, int sample_rate){
 		return tan(M_PI * w / sample_rate);

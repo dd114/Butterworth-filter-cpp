@@ -23,11 +23,39 @@ public:
     }
 
     template <typename T>
+    static vector<double> roll(const vector<T>& vec, int shift) {
+        std::vector<double> output(vec.size());
+
+        if (shift >= 0) {
+            for (int i = 0; i < vec.size() - shift; i++) 
+                output[shift + i] = vec[i];
+            
+            for (int i = 0; i < shift; i++) 
+                output[i] = vec[vec.size() - 1 - i];
+            
+        } else
+            throw invalid_argument("This functionality has not been added yet");
+
+        return output;
+    }
+
+    template <typename T>
     static vector<T> valueMultVector(double value, const vector<T>& vec) {
         vector<T> output(vec.size());
 
         for (int i = 0; i < output.size(); i++) {
             output[i] = value * vec[i];
+        }
+
+        return output;
+    }
+
+    template <typename T>
+    static vector<T> valueDivideVector(double value, const vector<T>& vec) {
+        vector<T> output(vec.size());
+
+        for (int i = 0; i < output.size(); i++) {
+            output[i] = vec[i] / value;
         }
 
         return output;
