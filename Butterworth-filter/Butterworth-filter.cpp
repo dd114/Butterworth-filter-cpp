@@ -25,4 +25,7 @@ int main() {
     Signal::printFile(x, mixed_tone1, "inputSignal.txt");
 
 
+    vector<double> numerator, denominator;
+    tie(numerator, denominator) = Signal::getCoeffs(3, Signal::transformFrequency(75, SAMPLE_RATE));
+    int a = 5; // only for breakpoint
 }

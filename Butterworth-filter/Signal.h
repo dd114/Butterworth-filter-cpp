@@ -29,6 +29,87 @@ public:
 
 	}
 
+	static tuple<vector<double>, vector<double>> getCoeffs(int order, double w){
+		int p;
+		if(order % 2 == 0)
+			p = order;
+		else
+			p = (order - 1);
+
+		vector<double> numerator(p + 1);
+		for(int k = 0; k < p + 1; k++){
+			numerator[k] = simplePow(-w * w, p / 2) * C(k, p);
+		}
+
+		vector<double> denominator(p + 1);
+		denCoeffs(denominator, w, order, p);
+
+
+
+
+		return make_tuple(numerator, denominator);
+	}
+
+
+	static double transformFrequency(double w, int sample_rate){
+		return tan(M_PI * w / sample_rate);
+	}
+
+private:
+	static int factorial(int n){
+		int mult = 1;
+		for(int i = 2; i < n + 1; i++){
+			mult *= i;
+		}
+
+		return mult;
+	}
+
+	static double simplePow(double number, unsigned int degree){
+		double output = 1;
+		for(int i = 0; i < degree; i++){
+			output *= number;
+		}
+
+		return output;
+	}
+
+	static double C(int k, int n){ // return can be shorten by math rules
+		return factorial(n) / (factorial(n - k) * factorial(k));
+	}
+
+	static double a(double w, int order, int k){
+		return 2. * w * cos(M_PI * k / order) * sin(M_PI / (2. * order)) - 2. * w * sin(M_PI * k / order) * cos(M_PI / (2. * order)) - w * w - 1.;
+	}
+
+	static double b(double w){
+		return -2. * w * w + 2.;
+	}
+
+	static double c(double w, int order, int k){
+		return -2. * w * cos(M_PI * k / order) * sin(M_PI / (2. * order)) + 2. * w * sin(M_PI * k / order) * cos(M_PI / (2. * order)) - w * w - 1.;
+	}
+
+	static void denCoeffs(vector<double>& denominator, double& w, int& order, int &p, int degree = 0, double prod = 1, int k = 1) {
+
+		if(k > p / 2){
+			denominator[degree] += prod;
+			return;
+		}
+
+		if(degree + 2 <= p) {
+			denCoeffs(denominator, w, order, p, degree + 2, prod * a(w, order, k), k + 1);
+		}
+
+		if(degree + 1 <= p) {
+			denCoeffs(denominator, w, order, p, degree + 1, prod * b(w), k + 1);
+		}
+
+		if(degree <= p) {
+			denCoeffs(denominator, w, order, p, degree, prod * c(w, order, k), k + 1);
+		}
+
+	}
 
 
 
@@ -41,6 +122,7 @@ public:
 
 
 
+public:
 	template <typename T>
 	static void printFile(const vector<T>& x, const vector<T>& y, string nameOfFile = "2d.txt") {
 		fstream myFile(nameOfFile, ios::out);
