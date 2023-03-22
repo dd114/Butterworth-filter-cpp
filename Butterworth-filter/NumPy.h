@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <cassert>
+#include <iostream>
+
 
 using namespace std;
 class NumPy {
@@ -24,7 +26,7 @@ public:
 
     template <typename T>
     static vector<double> roll(const vector<T>& vec, int shift) {
-        std::vector<double> output(vec.size());
+        vector<double> output(vec.size());
 
         if (shift >= 0) {
             for (int i = 0; i < vec.size() - shift; i++) 

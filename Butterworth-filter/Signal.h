@@ -2,7 +2,6 @@
 
 #include <tuple>
 #include <fstream>
-#include <iostream>
 
 #include "NumPy.h"
 
@@ -93,7 +92,7 @@ private:
 
 	static double simplePow(double number, unsigned int degree){
 		double output = 1;
-		for(int i = 0; i < degree; i++){
+		for(unsigned int i = 0; i < degree; i++){
 			output *= number;
 		}
 
