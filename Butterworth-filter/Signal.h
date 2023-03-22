@@ -76,6 +76,34 @@ public:
 		
 	}
 
+	static vector<double> processingOfSignal(const vector<double>& input, double cutoff, int sample_rate, int order = 2) {
+		double w = transformFrequency(cutoff, sample_rate);
+
+		vector<double> numerator, denominator;
+		tie(numerator, denominator) = getCoeffs(order, w);
+
+		int numberOfX = numerator.size();
+		int numberOfY = denominator.size();
+
+		vector<double> output(input.size());
+
+		for (int i = 0; i < output.size() - numberOfX + 1; i++) {
+			double inputSum = 0;
+			for (int j = 0; j < numberOfX; j++) {
+				inputSum += input[i + j] * numerator[j];
+			}
+
+			double outputSum = 0;
+			for (int j = 0; j < numberOfY; j++) {
+				outputSum += output[numberOfX - 1 + i + j - numberOfY] * denominator[j];
+			}
+
+			output[numberOfX - 1 + i] = inputSum - outputSum;
+		}
+
+		return output;
+	}
+
 	static double transformFrequency(double w, int sample_rate){
 		return tan(M_PI * w / sample_rate);
 	}
@@ -135,13 +163,6 @@ private:
 		}
 
 	}
-
-
-
-
-
-
-
 
 
 

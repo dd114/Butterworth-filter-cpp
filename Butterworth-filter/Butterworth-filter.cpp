@@ -21,11 +21,10 @@ int main() {
     for (int i = 0; i < mixed_tone1.size(); i++)
         mixed_tone1[i] = nice_tone1[i] + 0.8 * noise_tone2[i] + 0.5 * noise_tone3[i];
 
-    //Signal::printArray(nice_tone1);
     Signal::printFile(x, mixed_tone1, "inputSignal.txt");
 
+    double cutoff = 75; // frequency of slice
+    int order = 7; // order of filter
 
-    vector<double> numerator, denominator;
-    tie(numerator, denominator) = Signal::getCoeffs(3, Signal::transformFrequency(75, SAMPLE_RATE));
-    int a = 5; // only for breakpoint
+    Signal::printFile(x, Signal::processingOfSignal(mixed_tone1, cutoff, SAMPLE_RATE, order), "outputSignal.txt");
 }

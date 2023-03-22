@@ -1,10 +1,14 @@
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+import sys
 
 if __name__ == '__main__':
 
-    f = open('inputSignal.txt', 'r') # требования к файлу: первая колонка - координата/время, вторая - значения функции
+    if len(sys.argv) == 1:
+        raise SyntaxError("Argument of name of file doesn't exist")
+
+    f = open(sys.argv[1], 'r') # требования к файлу: первая колонка - координата/время, вторая - значения функции
     # f = open('approxY.txt', 'r')
     tempX = list()
     tempY = list()
